@@ -12,8 +12,6 @@ void configureDependencies() {
   );
 
   getIt.registerFactory<ProductsBloc>(
-    () => ProductsBloc(
-      productRepository: getIt<ProductRepository>(),
-    ),
+    () => ProductsBloc(productRepository: getIt<ProductRepository>()),
   );
 }

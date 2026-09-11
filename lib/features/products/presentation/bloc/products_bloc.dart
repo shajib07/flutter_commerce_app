@@ -5,10 +5,9 @@ import 'products_event.dart';
 import 'products_state.dart';
 
 final class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
-  ProductsBloc({
-    required ProductRepository productRepository,
-  }) : _productRepository = productRepository,
-       super(const ProductsState.initial()) {
+  ProductsBloc({required ProductRepository productRepository})
+    : _productRepository = productRepository,
+      super(const ProductsState.initial()) {
     on<ProductsLoadRequested>(_onLoadRequested);
   }
 

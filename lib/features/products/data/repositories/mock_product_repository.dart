@@ -1,11 +1,7 @@
 import '../../domain/entities/product.dart';
 import '../../domain/repositories/product_repository.dart';
 
-enum MockProductScenario {
-  success,
-  empty,
-  failure,
-}
+enum MockProductScenario { success, empty, failure }
 
 final class MockProductRepository implements ProductRepository {
   const MockProductRepository({

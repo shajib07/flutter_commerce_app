@@ -10,13 +10,11 @@ sealed class ProductsState with _$ProductsState {
 
   const factory ProductsState.loading() = ProductsLoading;
 
-  const factory ProductsState.success({
-    required List<Product> products,
-  }) = ProductsSuccess;
+  const factory ProductsState.success({required List<Product> products}) =
+      ProductsSuccess;
 
   const factory ProductsState.empty() = ProductsEmpty;
 
-  const factory ProductsState.failure({
-    required String message,
-  }) = ProductsFailure;
+  const factory ProductsState.failure({required String message}) =
+      ProductsFailure;
 }

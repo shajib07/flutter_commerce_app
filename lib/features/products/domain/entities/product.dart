@@ -2,13 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'product.freezed.dart';
 
-enum ProductCategory {
-  electronics,
-  fashion,
-  home,
-  beauty,
-  sports,
-}
+enum ProductCategory { electronics, fashion, home, beauty, sports }
 
 @freezed
 abstract class Product with _$Product {
