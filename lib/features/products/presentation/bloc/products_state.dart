@@ -19,7 +19,6 @@ sealed class ProductsState with _$ProductsState {
 
   const factory ProductsState.empty() = ProductsEmpty;
 
-  const factory ProductsState.failure({
-    required String message,
-  }) = ProductsFailure;
+  const factory ProductsState.failure({required String message}) =
+      ProductsFailure;
 }

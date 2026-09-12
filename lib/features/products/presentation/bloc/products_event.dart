@@ -8,11 +8,9 @@ part 'products_event.freezed.dart';
 sealed class ProductsEvent with _$ProductsEvent {
   const factory ProductsEvent.loadRequested() = ProductsLoadRequested;
 
-  const factory ProductsEvent.searchQueryChanged({
-    required String query,
-  }) = ProductsSearchQueryChanged;
+  const factory ProductsEvent.searchQueryChanged({required String query}) =
+      ProductsSearchQueryChanged;
 
-  const factory ProductsEvent.categorySelected({
-    ProductCategory? category,
-  }) = ProductsCategorySelected;
+  const factory ProductsEvent.categorySelected({ProductCategory? category}) =
+      ProductsCategorySelected;
 }

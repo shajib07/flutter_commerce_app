@@ -55,11 +55,13 @@ extension ProductsEventPatterns on ProductsEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ProductsLoadRequested value)?  loadRequested,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ProductsLoadRequested value)?  loadRequested,TResult Function( ProductsSearchQueryChanged value)?  searchQueryChanged,TResult Function( ProductsCategorySelected value)?  categorySelected,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case ProductsLoadRequested() when loadRequested != null:
-return loadRequested(_that);case _:
+return loadRequested(_that);case ProductsSearchQueryChanged() when searchQueryChanged != null:
+return searchQueryChanged(_that);case ProductsCategorySelected() when categorySelected != null:
+return categorySelected(_that);case _:
   return orElse();
 
 }
@@ -77,11 +79,13 @@ return loadRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ProductsLoadRequested value)  loadRequested,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ProductsLoadRequested value)  loadRequested,required TResult Function( ProductsSearchQueryChanged value)  searchQueryChanged,required TResult Function( ProductsCategorySelected value)  categorySelected,}){
 final _that = this;
 switch (_that) {
 case ProductsLoadRequested():
-return loadRequested(_that);}
+return loadRequested(_that);case ProductsSearchQueryChanged():
+return searchQueryChanged(_that);case ProductsCategorySelected():
+return categorySelected(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -95,11 +99,13 @@ return loadRequested(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ProductsLoadRequested value)?  loadRequested,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ProductsLoadRequested value)?  loadRequested,TResult? Function( ProductsSearchQueryChanged value)?  searchQueryChanged,TResult? Function( ProductsCategorySelected value)?  categorySelected,}){
 final _that = this;
 switch (_that) {
 case ProductsLoadRequested() when loadRequested != null:
-return loadRequested(_that);case _:
+return loadRequested(_that);case ProductsSearchQueryChanged() when searchQueryChanged != null:
+return searchQueryChanged(_that);case ProductsCategorySelected() when categorySelected != null:
+return categorySelected(_that);case _:
   return null;
 
 }
@@ -116,10 +122,12 @@ return loadRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadRequested,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadRequested,TResult Function( String query)?  searchQueryChanged,TResult Function( ProductCategory? category)?  categorySelected,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ProductsLoadRequested() when loadRequested != null:
-return loadRequested();case _:
+return loadRequested();case ProductsSearchQueryChanged() when searchQueryChanged != null:
+return searchQueryChanged(_that.query);case ProductsCategorySelected() when categorySelected != null:
+return categorySelected(_that.category);case _:
   return orElse();
 
 }
@@ -137,10 +145,12 @@ return loadRequested();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadRequested,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadRequested,required TResult Function( String query)  searchQueryChanged,required TResult Function( ProductCategory? category)  categorySelected,}) {final _that = this;
 switch (_that) {
 case ProductsLoadRequested():
-return loadRequested();}
+return loadRequested();case ProductsSearchQueryChanged():
+return searchQueryChanged(_that.query);case ProductsCategorySelected():
+return categorySelected(_that.category);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -154,10 +164,12 @@ return loadRequested();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadRequested,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadRequested,TResult? Function( String query)?  searchQueryChanged,TResult? Function( ProductCategory? category)?  categorySelected,}) {final _that = this;
 switch (_that) {
 case ProductsLoadRequested() when loadRequested != null:
-return loadRequested();case _:
+return loadRequested();case ProductsSearchQueryChanged() when searchQueryChanged != null:
+return searchQueryChanged(_that.query);case ProductsCategorySelected() when categorySelected != null:
+return categorySelected(_that.category);case _:
   return null;
 
 }
@@ -196,5 +208,137 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class ProductsSearchQueryChanged implements ProductsEvent {
+  const ProductsSearchQueryChanged({required this.query});
+  
+
+ final  String query;
+
+/// Create a copy of ProductsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ProductsSearchQueryChangedCopyWith<ProductsSearchQueryChanged> get copyWith => _$ProductsSearchQueryChangedCopyWithImpl<ProductsSearchQueryChanged>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductsSearchQueryChanged&&(identical(other.query, query) || other.query == query));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,query);
+
+@override
+String toString() {
+  return 'ProductsEvent.searchQueryChanged(query: $query)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ProductsSearchQueryChangedCopyWith<$Res> implements $ProductsEventCopyWith<$Res> {
+  factory $ProductsSearchQueryChangedCopyWith(ProductsSearchQueryChanged value, $Res Function(ProductsSearchQueryChanged) _then) = _$ProductsSearchQueryChangedCopyWithImpl;
+@useResult
+$Res call({
+ String query
+});
+
+
+
+
+}
+/// @nodoc
+class _$ProductsSearchQueryChangedCopyWithImpl<$Res>
+    implements $ProductsSearchQueryChangedCopyWith<$Res> {
+  _$ProductsSearchQueryChangedCopyWithImpl(this._self, this._then);
+
+  final ProductsSearchQueryChanged _self;
+  final $Res Function(ProductsSearchQueryChanged) _then;
+
+/// Create a copy of ProductsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? query = null,}) {
+  return _then(ProductsSearchQueryChanged(
+query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class ProductsCategorySelected implements ProductsEvent {
+  const ProductsCategorySelected({this.category});
+  
+
+ final  ProductCategory? category;
+
+/// Create a copy of ProductsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ProductsCategorySelectedCopyWith<ProductsCategorySelected> get copyWith => _$ProductsCategorySelectedCopyWithImpl<ProductsCategorySelected>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductsCategorySelected&&(identical(other.category, category) || other.category == category));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,category);
+
+@override
+String toString() {
+  return 'ProductsEvent.categorySelected(category: $category)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ProductsCategorySelectedCopyWith<$Res> implements $ProductsEventCopyWith<$Res> {
+  factory $ProductsCategorySelectedCopyWith(ProductsCategorySelected value, $Res Function(ProductsCategorySelected) _then) = _$ProductsCategorySelectedCopyWithImpl;
+@useResult
+$Res call({
+ ProductCategory? category
+});
+
+
+
+
+}
+/// @nodoc
+class _$ProductsCategorySelectedCopyWithImpl<$Res>
+    implements $ProductsCategorySelectedCopyWith<$Res> {
+  _$ProductsCategorySelectedCopyWithImpl(this._self, this._then);
+
+  final ProductsCategorySelected _self;
+  final $Res Function(ProductsCategorySelected) _then;
+
+/// Create a copy of ProductsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? category = freezed,}) {
+  return _then(ProductsCategorySelected(
+category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as ProductCategory?,
+  ));
+}
+
+
+}
 
 // dart format on

@@ -128,12 +128,12 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<Product> products)?  success,TResult Function()?  empty,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<Product> allProducts,  List<Product> products,  String searchQuery,  ProductCategory? selectedCategory)?  success,TResult Function()?  empty,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ProductsInitial() when initial != null:
 return initial();case ProductsLoading() when loading != null:
 return loading();case ProductsSuccess() when success != null:
-return success(_that.products);case ProductsEmpty() when empty != null:
+return success(_that.allProducts,_that.products,_that.searchQuery,_that.selectedCategory);case ProductsEmpty() when empty != null:
 return empty();case ProductsFailure() when failure != null:
 return failure(_that.message);case _:
   return orElse();
@@ -153,12 +153,12 @@ return failure(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<Product> products)  success,required TResult Function()  empty,required TResult Function( String message)  failure,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<Product> allProducts,  List<Product> products,  String searchQuery,  ProductCategory? selectedCategory)  success,required TResult Function()  empty,required TResult Function( String message)  failure,}) {final _that = this;
 switch (_that) {
 case ProductsInitial():
 return initial();case ProductsLoading():
 return loading();case ProductsSuccess():
-return success(_that.products);case ProductsEmpty():
+return success(_that.allProducts,_that.products,_that.searchQuery,_that.selectedCategory);case ProductsEmpty():
 return empty();case ProductsFailure():
 return failure(_that.message);}
 }
@@ -174,12 +174,12 @@ return failure(_that.message);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<Product> products)?  success,TResult? Function()?  empty,TResult? Function( String message)?  failure,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<Product> allProducts,  List<Product> products,  String searchQuery,  ProductCategory? selectedCategory)?  success,TResult? Function()?  empty,TResult? Function( String message)?  failure,}) {final _that = this;
 switch (_that) {
 case ProductsInitial() when initial != null:
 return initial();case ProductsLoading() when loading != null:
 return loading();case ProductsSuccess() when success != null:
-return success(_that.products);case ProductsEmpty() when empty != null:
+return success(_that.allProducts,_that.products,_that.searchQuery,_that.selectedCategory);case ProductsEmpty() when empty != null:
 return empty();case ProductsFailure() when failure != null:
 return failure(_that.message);case _:
   return null;
@@ -257,8 +257,15 @@ String toString() {
 
 
 class ProductsSuccess implements ProductsState {
-  const ProductsSuccess({required final  List<Product> products}): _products = products;
+  const ProductsSuccess({required final  List<Product> allProducts, required final  List<Product> products, this.searchQuery = '', this.selectedCategory}): _allProducts = allProducts,_products = products;
   
+
+ final  List<Product> _allProducts;
+ List<Product> get allProducts {
+  if (_allProducts is EqualUnmodifiableListView) return _allProducts;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_allProducts);
+}
 
  final  List<Product> _products;
  List<Product> get products {
@@ -267,6 +274,8 @@ class ProductsSuccess implements ProductsState {
   return EqualUnmodifiableListView(_products);
 }
 
+@JsonKey() final  String searchQuery;
+ final  ProductCategory? selectedCategory;
 
 /// Create a copy of ProductsState
 /// with the given fields replaced by the non-null parameter values.
@@ -278,16 +287,16 @@ $ProductsSuccessCopyWith<ProductsSuccess> get copyWith => _$ProductsSuccessCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductsSuccess&&const DeepCollectionEquality().equals(other._products, _products));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductsSuccess&&const DeepCollectionEquality().equals(other._allProducts, _allProducts)&&const DeepCollectionEquality().equals(other._products, _products)&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&(identical(other.selectedCategory, selectedCategory) || other.selectedCategory == selectedCategory));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_products));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_allProducts),const DeepCollectionEquality().hash(_products),searchQuery,selectedCategory);
 
 @override
 String toString() {
-  return 'ProductsState.success(products: $products)';
+  return 'ProductsState.success(allProducts: $allProducts, products: $products, searchQuery: $searchQuery, selectedCategory: $selectedCategory)';
 }
 
 
@@ -298,7 +307,7 @@ abstract mixin class $ProductsSuccessCopyWith<$Res> implements $ProductsStateCop
   factory $ProductsSuccessCopyWith(ProductsSuccess value, $Res Function(ProductsSuccess) _then) = _$ProductsSuccessCopyWithImpl;
 @useResult
 $Res call({
- List<Product> products
+ List<Product> allProducts, List<Product> products, String searchQuery, ProductCategory? selectedCategory
 });
 
 
@@ -315,10 +324,13 @@ class _$ProductsSuccessCopyWithImpl<$Res>
 
 /// Create a copy of ProductsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? products = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? allProducts = null,Object? products = null,Object? searchQuery = null,Object? selectedCategory = freezed,}) {
   return _then(ProductsSuccess(
-products: null == products ? _self._products : products // ignore: cast_nullable_to_non_nullable
-as List<Product>,
+allProducts: null == allProducts ? _self._allProducts : allProducts // ignore: cast_nullable_to_non_nullable
+as List<Product>,products: null == products ? _self._products : products // ignore: cast_nullable_to_non_nullable
+as List<Product>,searchQuery: null == searchQuery ? _self.searchQuery : searchQuery // ignore: cast_nullable_to_non_nullable
+as String,selectedCategory: freezed == selectedCategory ? _self.selectedCategory : selectedCategory // ignore: cast_nullable_to_non_nullable
+as ProductCategory?,
   ));
 }
 

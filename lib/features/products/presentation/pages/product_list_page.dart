@@ -18,9 +18,16 @@ final class ProductListPage extends StatelessWidget {
           return switch (state) {
             ProductsInitial() => const _LoadingView(),
             ProductsLoading() => const _LoadingView(),
-            ProductsSuccess(products: final products) => _ProductList(
-              products: products,
-            ),
+            ProductsSuccess(
+              products: final products,
+              searchQuery: final searchQuery,
+              selectedCategory: final selectedCategory,
+            ) =>
+              _ProductsContent(
+                products: products,
+                searchQuery: searchQuery,
+                selectedCategory: selectedCategory,
+              ),
             ProductsEmpty() => const _StateMessage(
               icon: Icons.inventory_2_outlined,
               title: 'No products found',
@@ -42,6 +49,110 @@ final class ProductListPage extends StatelessWidget {
       ),
     );
   }
+}
+
+final class _ProductsContent extends StatelessWidget {
+  const _ProductsContent({
+    required this.products,
+    required this.searchQuery,
+    required this.selectedCategory,
+  });
+
+  final List<Product> products;
+  final String searchQuery;
+  final ProductCategory? selectedCategory;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+          child: TextField(
+            onChanged: (query) {
+              context.read<ProductsBloc>().add(
+                ProductsEvent.searchQueryChanged(query: query),
+              );
+            },
+            decoration: InputDecoration(
+              hintText: 'Search products or brands',
+              prefixIcon: const Icon(Icons.search),
+              filled: true,
+              fillColor: colorScheme.surface,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: colorScheme.outlineVariant),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: colorScheme.primary, width: 2),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 48,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            scrollDirection: Axis.horizontal,
+            children: [
+              ChoiceChip(
+                label: const Text('All'),
+                selected: selectedCategory == null,
+                onSelected: (selected) {
+                  if (!selected) {
+                    return;
+                  }
+
+                  context.read<ProductsBloc>().add(
+                    const ProductsEvent.categorySelected(),
+                  );
+                },
+              ),
+              const SizedBox(width: 8),
+              for (final category in ProductCategory.values) ...[
+                ChoiceChip(
+                  label: Text(_categoryLabel(category)),
+                  selected: selectedCategory == category,
+                  onSelected: (selected) {
+                    if (!selected) {
+                      return;
+                    }
+
+                    context.read<ProductsBloc>().add(
+                      ProductsEvent.categorySelected(category: category),
+                    );
+                  },
+                ),
+                const SizedBox(width: 8),
+              ],
+            ],
+          ),
+        ),
+        Expanded(
+          child: products.isEmpty
+              ? const _StateMessage(
+                  icon: Icons.search_off_outlined,
+                  title: 'No matching products',
+                  message: 'Try another search or choose a different category.',
+                )
+              : _ProductList(products: products),
+        ),
+      ],
+    );
+  }
+}
+
+String _categoryLabel(ProductCategory category) {
+  return switch (category) {
+    ProductCategory.electronics => 'Electronics',
+    ProductCategory.fashion => 'Fashion',
+    ProductCategory.home => 'Home',
+    ProductCategory.beauty => 'Beauty',
+    ProductCategory.sports => 'Sports',
+  };
 }
 
 final class _LoadingView extends StatelessWidget {

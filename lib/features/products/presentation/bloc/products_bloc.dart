@@ -6,10 +6,9 @@ import 'products_event.dart';
 import 'products_state.dart';
 
 final class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
-  ProductsBloc({
-    required ProductRepository productRepository,
-  }) : _productRepository = productRepository,
-       super(const ProductsState.initial()) {
+  ProductsBloc({required ProductRepository productRepository})
+    : _productRepository = productRepository,
+      super(const ProductsState.initial()) {
     on<ProductsLoadRequested>(_onLoadRequested);
     on<ProductsSearchQueryChanged>(_onSearchQueryChanged);
     on<ProductsCategorySelected>(_onCategorySelected);
@@ -31,12 +30,7 @@ final class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         return;
       }
 
-      emit(
-        ProductsState.success(
-          allProducts: products,
-          products: products,
-        ),
-      );
+      emit(ProductsState.success(allProducts: products, products: products));
     } on Exception {
       emit(
         const ProductsState.failure(
@@ -97,16 +91,18 @@ final class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   }) {
     final normalizedQuery = query.trim().toLowerCase();
 
-    return products.where((product) {
-      final matchesQuery =
-          normalizedQuery.isEmpty ||
-          product.title.toLowerCase().contains(normalizedQuery) ||
-          product.brand.toLowerCase().contains(normalizedQuery);
+    return products
+        .where((product) {
+          final matchesQuery =
+              normalizedQuery.isEmpty ||
+              product.title.toLowerCase().contains(normalizedQuery) ||
+              product.brand.toLowerCase().contains(normalizedQuery);
 
-      final matchesCategory =
-          category == null || product.category == category;
+          final matchesCategory =
+              category == null || product.category == category;
 
-      return matchesQuery && matchesCategory;
-    }).toList(growable: false);
+          return matchesQuery && matchesCategory;
+        })
+        .toList(growable: false);
   }
 }
