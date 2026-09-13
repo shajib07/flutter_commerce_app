@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/entities/product.dart';
-import '../../domain/repositories/product_repository.dart';
+import '../../../domain/entities/product.dart';
+import '../../../domain/repositories/product_repository.dart';
 import 'products_event.dart';
 import 'products_state.dart';
 

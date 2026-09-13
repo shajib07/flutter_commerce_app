@@ -1,5 +1,6 @@
 import '../../domain/entities/product.dart';
 import '../../domain/repositories/product_repository.dart';
+import '../../domain/exceptions/product_exceptions.dart';
 
 enum MockProductScenario { success, empty, failure }
 
@@ -22,13 +23,16 @@ final class MockProductRepository implements ProductRepository {
       MockProductScenario.failure => throw const ProductLoadException(),
     };
   }
-}
-
-final class ProductLoadException implements Exception {
-  const ProductLoadException();
 
   @override
-  String toString() => 'Products could not be loaded.';
+  Future<Product> getProductById(String id) async {
+    final products = await getProducts();
+
+    return products.firstWhere(
+      (product) => product.id == id,
+      orElse: () => throw ProductNotFoundException(id),
+    );
+  }
 }
 
 const _products = <Product>[
